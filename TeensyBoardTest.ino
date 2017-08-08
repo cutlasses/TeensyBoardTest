@@ -112,13 +112,13 @@ void loop()
     x[i] = Wire.read(); // receive a byte as character
   }
 
-
-  for( i=12; i<14; )
+  // output pots
+  for( i=0; i<16; )
   {
     unsigned int b = x[i++];
     b |= ((unsigned int)x[i++])<<8;
     Serial.print(b);
-    Serial.print(",");
+    Serial.print(", ");
   }
   
   Serial.println("");
@@ -151,7 +151,10 @@ void loop()
   cycle_leds();
 
   test_switches();
-  
+
+  //const uint16_t time = 200;
   delay(time);
+
+  Serial.println("update");
 }
 
