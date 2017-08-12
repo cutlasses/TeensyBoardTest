@@ -6,7 +6,8 @@
 #include <Bounce.h>
 
 #define AUDIO_THRU
-#define I2C_ADDR          123 
+#define DATA_SIZE 12
+#define I2C_ADDRESS          111 
 
 const int NUM_LEDS(3);
 const int LED_PINS[NUM_LEDS] = { 7, 11, 29 };
@@ -103,17 +104,17 @@ void test_switches()
 
 void loop()
 { 
-  Wire.requestFrom(123, 16);    // request
+  Wire.requestFrom(I2C_ADDRESS, DATA_SIZE);    // request
 
-  unsigned char x[16];
+  unsigned char x[DATA_SIZE];
   int i;
-  for( i=0; i<16; ++i )
+  for( i=0; i<DATA_SIZE; ++i )
   {
     x[i] = Wire.read(); // receive a byte as character
   }
 
   // output pots
-  for( i=0; i<16; )
+  for( i=0; i<DATA_SIZE; )
   {
     unsigned int b = x[i++];
     b |= ((unsigned int)x[i++])<<8;
@@ -124,7 +125,7 @@ void loop()
   Serial.println("");
 
 
-  const uint16_t pot = x[12] | ( x[13] << 8 );
+  const uint16_t pot = x[0] | ( x[1] << 8 );
   const float speed = pot / 1024.0f;
   const uint16_t time = 50 + ( 1000 * speed );
 
